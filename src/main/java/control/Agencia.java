@@ -25,6 +25,7 @@ public class Agencia {
         MongoDatabase database = mongoClient.getDatabase("ADEtravel");
         //----GENERAR COLECCIÓN----
         MongoCollection<Document> collection = database.getCollection("paquetes");
+        //hola mundo
         
         //AGREGAR EXCEPCIONES DE ELEMENTO VACÍO
         
