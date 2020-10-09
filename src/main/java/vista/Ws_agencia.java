@@ -50,9 +50,10 @@ public class Ws_agencia {
     }
     
     @GET
-    @Path("actualizarClientes/id, address, movil/{id},{address},{movil}")
+    @Path("actualizarClientes/id/{id}/address/{address}/movil/{movil}")
     @Produces({"application/json"})
-    public String actuailizarCliente(@PathParam("id, address, movil") String id, String address, String movil){
+    public String actuailizarCliente(@PathParam("id") String id,
+            @PathParam("address") String address,@PathParam("movil") String movil){
         
         return agenADEtravel.actualizarCliente(id, address, movil);
         
