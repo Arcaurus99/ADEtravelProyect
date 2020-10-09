@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -31,20 +32,30 @@ public class Ws_agencia {
      */
     public Ws_agencia() {
     }
-
+    
     /**
      * Retrieves representation of an instance of vista.Ws_agencia
      * @return an instance of java.lang.String
      */
+    
+    Agencia agenADEtravel = new Agencia();
+    
     @GET
     @Path("consultaPaquetes")
     @Produces({"application/json"})
     public String consultaPaquetes(){
         
-        Agencia agenADEtravel = new Agencia();
         return agenADEtravel.buscarPaquete();
         
-    
     }
+    
+    @GET
+    @Path("actualizarClientes/id, address, movil/{id},{address},{movil}")
+    @Produces({"application/json"})
+    public String actuailizarCliente(@PathParam("id, address, movil") String id, String address, String movil){
         
+        return agenADEtravel.actualizarCliente(id, address, movil);
+        
+    }
+    
 }
