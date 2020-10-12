@@ -13,8 +13,6 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.*;
 import org.bson.Document;
-<<<<<<< HEAD
-=======
 import org.bson.types.ObjectId;
 import java.util.List;
 import java.util.Arrays;
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
 
->>>>>>> a6a9170491d4e75a43aa68197a2e1955a5cd8633
 
 /**
  *
@@ -45,9 +42,7 @@ public class Agencia {
         //AGREGAR EXCEPCIONES DE ELEMENTO VACÍO
         return collection.find().first().toJson();
     }
-<<<<<<< HEAD
-=======
-    
+
     public String actualizarCliente(String id, String address, String movil){
         
         MongoCollection<Document> collection = database.getCollection("cliente");
@@ -56,6 +51,5 @@ public class Agencia {
         
     }
     
->>>>>>> a6a9170491d4e75a43aa68197a2e1955a5cd8633
         
 }
