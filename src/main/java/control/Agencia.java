@@ -48,8 +48,8 @@ public class Agencia {
         MongoCollection<Document> collection = database.getCollection("cliente");
         collection.updateOne(eq("_id", new ObjectId(id)), combine(set("address", address), set("movil", movil)));
         return "(\"Confirmation\": 1)";
-        
     }
+         
     
         
-}
+

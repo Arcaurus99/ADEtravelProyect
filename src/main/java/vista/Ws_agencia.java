@@ -60,3 +60,17 @@ public class Ws_agencia {
     }
     
 }
+
+
+
+
+Agencia agenADEtravel = new Agencia();
+    
+    @GET
+    @Path("consultaPaquetes")
+    @Produces({"application/json"})
+    public String consultaPaquetes(){
+        
+        return agenADEtravel.buscarPaquete();
+        
+    
