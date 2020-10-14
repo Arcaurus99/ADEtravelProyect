@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import static com.mongodb.client.model.Filters.*;
 import com.mongodb.client.model.Sorts;
 import static com.mongodb.client.model.Updates.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonValue;
 
 
 /**
@@ -46,17 +50,19 @@ public class Agencia {
         return collection.find().sort(Sorts.descending("codigo")).first().toJson();
     }
     
-    public String buscarUltimasCincoFacturas(){
+    public JsonValue buscarUltimasCincoFacturas(int h){
         MongoCollection<Document> collection = database.getCollection("ventas");
         FindIterable<Document> cursor = collection.find().sort(new BasicDBObject("numFac",-1));
         MongoCursor<Document> iterator = cursor.iterator();
-        List<BasicDBObject> lista = new ArrayList<>();
+        JsonArray lista = Json.createArrayBuilder().build();
         int i = 0;
-        while(i <= 5) {
-            lista.add(new BasicDBObject("", iterator.next().toJson()));
+        while(i <= 5 && iterator.hasNext()) {
+            JsonObject obj = new JsonObject(iterator.next().toJson());
+            lista.add(obj);
+            System.out.println("Documento: " + iterator.next().toJson());
             i++;
         }
-        return lista.iterator().next().toJson();
+        return lista;
     }
     
     public String actualizarCliente(String id, String address, String movil){
@@ -68,6 +74,15 @@ public class Agencia {
     public String buscarPrimerCliente(){
         MongoCollection<Document> collection = database.getCollection("clientes");
         return collection.find().first().toJson();
+    }
+    
+    public static void main (String args[]){
+        Agencia agenADEtravel = new Agencia();
+        agenADEtravel.buscarUltimasCincoFacturas();
+    }
+
+    public JsonValue buscarUltimasCincoFacturas() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -8,6 +8,7 @@ package vista;
 import com.mongodb.client.MongoCursor;
 import static com.mongodb.client.model.Filters.regex;
 import control.Agencia;
+import javax.json.JsonValue;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -60,18 +61,19 @@ public class Ws_agencia {
     @GET
     @Path("buscarUltimasFacturas")
     @Produces({"application/json"})
-    public String buscarUltimasCincoFacturas(){
+    public JsonValue buscarUltimasCincoFacturas(){
         return agenADEtravel.buscarUltimasCincoFacturas();
     }
     
     @GET
     @Path("actualizarClientes/id/{id}/address/{address}/movil/{movil}")
     @Produces({"application/json"})
-    public void actuailizarCliente(@PathParam("id") String id,
+    public String actuailizarCliente(@PathParam("id") String id,
             @PathParam("address") String address,@PathParam("movil") String movil){
-        System.out.println(agenADEtravel.buscarPrimerCliente());
+        String comprobacion = "[" + agenADEtravel.buscarPrimerCliente() + ", ";
         agenADEtravel.actualizarCliente(id, address, movil);
-        System.out.println(agenADEtravel.buscarPrimerCliente());
+        comprobacion = comprobacion.concat(agenADEtravel.buscarPrimerCliente() + "]");
+        return comprobacion;
     }
     
 }
