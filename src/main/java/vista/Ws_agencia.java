@@ -53,24 +53,18 @@ public class Ws_agencia {
     @Path("actualizarClientes/id/{id}/address/{address}/movil/{movil}")
     @Produces({"application/json"})
     public String actuailizarCliente(@PathParam("id") String id,
-            @PathParam("address") String address,@PathParam("movil") String movil){
-        
-        return agenADEtravel.actualizarCliente(id, address, movil);
+    @PathParam("address") String address,@PathParam("movil") String movil){
+    return agenADEtravel.actualizarCliente(id, address, movil);
         
     }
     
+    @GET
+    @Path("eliminarUnDocumento/id/{id}")
+    @Produces({"applicaction/json"})
+    public String eliminarUnDocumento(@PathParam("id") String id){
+    return agenADEtravel.eliminarUnDocumento(id);
+       
+    }
 }
 
 
-
-
-Agencia agenADEtravel = new Agencia();
-    
-    @GET
-    @Path("consultaPaquetes")
-    @Produces({"application/json"})
-    public String consultaPaquetes(){
-        
-        return agenADEtravel.buscarPaquete();
-        
-    

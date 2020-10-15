@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package control;
-
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -27,7 +27,7 @@ import static com.mongodb.client.model.Updates.*;
  */
 public class Agencia {
     
-
+    MongoClient cliente;
     //----CONEXICÓN REMOTA Y LOCAL----
     MongoClient mongoClient = MongoClients.create("mongodb://userLab4:passworduserLab4@93.188.167.110:27017/?authSource=lab4");
     //MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
@@ -35,10 +35,8 @@ public class Agencia {
     MongoDatabase database = mongoClient.getDatabase("lab4");
     
     public String buscarPaquete(){
-      
         //----GENERAR COLECCIÓN----
-        MongoCollection<Document> collection = database.getCollection("paquetes");
-        
+        MongoCollection<Document> collection = database.getCollection("paquetes");  
         //AGREGAR EXCEPCIONES DE ELEMENTO VACÍO
         return collection.find().first().toJson();
     }
@@ -50,6 +48,14 @@ public class Agencia {
         return "(\"Confirmation\": 1)";
     }
          
-    
-        
+    public String eliminarUnDocumento( String id){
+        database = mongoClient.getDatabase("lab4");
+        MongoCollection<Document> coleccion = database.getCollection("clientes");
+        coleccion.deleteOne(eq("_id", new ObjectId(id)));
+        //return "(\"Confirmation\": 1)";
+        return "Fue eliminado";
+      
+    }
+}
+
 
