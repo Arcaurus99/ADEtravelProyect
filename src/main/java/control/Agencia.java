@@ -12,14 +12,8 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.result.*;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-import java.util.List;
-import java.util.Arrays;
-import java.util.ArrayList;
 import static com.mongodb.client.model.Filters.*;
 import com.mongodb.client.model.Sorts;
 import static com.mongodb.client.model.Updates.*;
@@ -27,6 +21,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
+import java.lang.Object;
 
 
 /**
@@ -57,7 +52,8 @@ public class Agencia {
         JsonArray lista = Json.createArrayBuilder().build();
         int i = 0;
         while(i <= 5 && iterator.hasNext()) {
-            JsonObject obj = new JsonObject(iterator.next().toJson());
+            String obj;
+            obj = iterator.next().toJson();
             lista.add(obj);
             System.out.println("Documento: " + iterator.next().toJson());
             i++;
@@ -67,7 +63,7 @@ public class Agencia {
     
     public String actualizarCliente(String id, String address, String movil){
         MongoCollection<Document> collection = database.getCollection("clientes");
-        collection.updateOne(eq("_id", new ObjectId(id)), combine(set("address", address), set("movil", movil)));
+        collection.updateOne(eq("_id", new ObjectId(id)), combine(set("address", "\"address\""), set("movil", "\"movil\"")));
         return "(\"Confirmation\": 1)";
     }
     
