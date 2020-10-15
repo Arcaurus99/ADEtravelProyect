@@ -21,9 +21,7 @@ import com.mongodb.client.model.Sorts;
 import static com.mongodb.client.model.Updates.*;
 import javax.json.Json;
 import javax.json.JsonArray;
-import javax.json.JsonObject;
 import javax.json.JsonValue;
-import java.lang.Object;
 
 
 /**
@@ -61,55 +59,46 @@ public class Agencia {
         return collection.find().sort(Sorts.descending("codigo")).first().toJson();
     }
     
-    public JsonValue buscarUltimasCincoFacturas(int h){
+    public String buscarUltimasCincoFacturas(){
         MongoCollection<Document> collection = database.getCollection("ventas");
         FindIterable<Document> cursor = collection.find().sort(new BasicDBObject("numFac",-1));
         MongoCursor<Document> iterator = cursor.iterator();
-        JsonArray lista = Json.createArrayBuilder().build();
+        //JsonArray lista = Json.createArrayBuilder().build();
+        String listaString = "[";
         int i = 0;
         while(i <= 5 && iterator.hasNext()) {
             String obj;
             obj = iterator.next().toJson();
             //lista.add(obj);
+            listaString.concat(iterator.next().toJson());
+            if (i <=4){
+                listaString.concat(",");                
+            }            
+            /*String obj = iterator.next().toJson();
+            lista.add(obj);
             System.out.println("Documento: " + iterator.next().toJson());
-            i++;
+            i++;*/
         }
-        return lista;
+        listaString.concat("]");
+        return listaString;
     }
     
+    public String eliminarUnDocumento( String id){
+        database = mongoClient.getDatabase("lab4");
+        MongoCollection<Document> coleccion = database.getCollection("clientes");
+        coleccion.deleteOne(eq("_id", new ObjectId(id)));
+        //return "(\"Confirmation\": 1)";
+        return "Fue eliminado"; 
+    }
 
     public String actualizarCliente(String id, String address, String movil){
         MongoCollection<Document> collection = database.getCollection("clientes");
         collection.updateOne(eq("_id", new ObjectId(id)), combine(set("address", "\"address\""), set("movil", "\"movil\"")));
         return "(\"Confirmation\": 1)";
     }
-
-         
-    public String eliminarUnDocumento( String id){
-        database = mongoClient.getDatabase("lab4");
-        MongoCollection<Document> coleccion = database.getCollection("clientes");
-        coleccion.deleteOne(eq("_id", new ObjectId(id)));
-        //return "(\"Confirmation\": 1)";
-        return "Fue eliminado";
-      
-    }
-
     
     public String buscarPrimerCliente(){
         MongoCollection<Document> collection = database.getCollection("clientes");
         return collection.find().first().toJson();
     }
-    
-    public static void main (String args[]){
-        Agencia agenADEtravel = new Agencia();
-        agenADEtravel.buscarUltimasCincoFacturas();
-    }
-
-    public JsonValue buscarUltimasCincoFacturas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-
 }
-
-
