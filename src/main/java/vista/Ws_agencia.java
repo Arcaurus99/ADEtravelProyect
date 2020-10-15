@@ -61,7 +61,7 @@ public class Ws_agencia {
     @GET
     @Path("buscarUltimasFacturas")
     @Produces({"application/json"})
-    public JsonValue buscarUltimasCincoFacturas(){
+    public String buscarUltimasCincoFacturas(){
         return agenADEtravel.buscarUltimasCincoFacturas();
     }
     
