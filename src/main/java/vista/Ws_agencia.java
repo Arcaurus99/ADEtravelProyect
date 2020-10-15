@@ -61,7 +61,7 @@ public class Ws_agencia {
     @GET
     @Path("buscarUltimasFacturas")
     @Produces({"application/json"})
-    public String buscarUltimasCincoFacturas(){
+    public String buscarUltimasCincoFacturas(/*@PathParam("cantidad") int cantidad*/){
         return agenADEtravel.buscarUltimasCincoFacturas();
     }
 
@@ -73,14 +73,21 @@ public class Ws_agencia {
     }
 
     @GET
-    @Path("actualizarClientes/id/{id}/address/{address}/movil/{movil}")
+    @Path("actualizarClientes/id/{id}/nuevosDatos/{nuevosDatos}")
     @Produces({"application/json"})
-    public String actuailizarCliente(@PathParam("id") String id,
-            @PathParam("address") String address, @PathParam("movil") String movil) {
-        String comprobacion = "[" + agenADEtravel.buscarPrimerCliente() + ", ";
-        agenADEtravel.actualizarCliente(id, address, movil);
-        comprobacion = comprobacion.concat(agenADEtravel.buscarPrimerCliente() + "]");
+    public String actuailizarCliente(@PathParam("id") String id, @PathParam("nuevosDatos") String nuevosDatos){
+        String comprobacion = "[" + agenADEtravel.buscarCliente(id) + ", ";
+        comprobacion += agenADEtravel.actualizarCliente(id, nuevosDatos);
+        comprobacion += (agenADEtravel.buscarCliente(id)) + "]";
         return comprobacion;
+    }
+
+    @GET
+    @Path("buscarCliente/id/{id}")
+    @Produces({"application/json"})
+    public String buscarCliente(@PathParam("id") String id,
+            @PathParam("address") String address, @PathParam("movil") String movil) {
+        return agenADEtravel.buscarCliente(id);
     }
     
 }
