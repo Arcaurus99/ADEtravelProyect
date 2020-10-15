@@ -5,7 +5,10 @@
  */
 package vista;
 
+import com.mongodb.client.MongoCursor;
+import static com.mongodb.client.model.Filters.regex;
 import control.Agencia;
+import javax.json.JsonValue;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -15,6 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import org.bson.Document;
 
 /**
  * REST Web Service
@@ -32,38 +36,52 @@ public class Ws_agencia {
      */
     public Ws_agencia() {
     }
-    
+
     /**
      * Retrieves representation of an instance of vista.Ws_agencia
+     *
      * @return an instance of java.lang.String
      */
-    
     Agencia agenADEtravel = new Agencia();
-    
+
     @GET
-    @Path("consultaPaquetes")
+    @Path("buscarPrimerPaquete")
     @Produces({"application/json"})
-    public String consultaPaquetes(){
-        
-        return agenADEtravel.buscarPaquete();
-        
+    public String buscarPrimerPaquete() {
+        return agenADEtravel.buscarPrimerPaquete();
     }
-    
+
+    @GET
+    @Path("buscarUltimaFactura")
+    @Produces({"application/json"})
+    public String buscarUltimaFactura() {
+        return agenADEtravel.buscarUltimaFactura();
+    }
+
+    @GET
+    @Path("buscarUltimasFacturas")
+    @Produces({"application/json"})
+    public JsonValue buscarUltimasCincoFacturas() {
+        return agenADEtravel.buscarUltimasCincoFacturas();
+    }
+
     @GET
     @Path("actualizarClientes/id/{id}/address/{address}/movil/{movil}")
     @Produces({"application/json"})
     public String actuailizarCliente(@PathParam("id") String id,
-    @PathParam("address") String address,@PathParam("movil") String movil){
-    return agenADEtravel.actualizarCliente(id, address, movil);
-        
+            @PathParam("address") String address, @PathParam("movil") String movil) {
+        String comprobacion = "[" + agenADEtravel.buscarPrimerCliente() + ", ";
+        agenADEtravel.actualizarCliente(id, address, movil);
+        comprobacion = comprobacion.concat(agenADEtravel.buscarPrimerCliente() + "]");
+        return comprobacion;
     }
-    
+
     @GET
     @Path("eliminarUnDocumento/id/{id}")
     @Produces({"applicaction/json"})
-    public String eliminarUnDocumento(@PathParam("id") String id){
-    return agenADEtravel.eliminarUnDocumento(id);
-       
+    public String eliminarUnDocumento(@PathParam("id") String id) {
+        return agenADEtravel.eliminarUnDocumento(id);
+
     }
 }
 
