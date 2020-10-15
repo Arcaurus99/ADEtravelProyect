@@ -66,6 +66,13 @@ public class Ws_agencia {
     }
 
     @GET
+    @Path("eliminarUnDocumento/id/{id}")
+    @Produces({"applicaction/json"})
+    public String eliminarUnDocumento(@PathParam("id") String id) {
+        return agenADEtravel.eliminarUnDocumento(id);
+    }
+
+    @GET
     @Path("actualizarClientes/id/{id}/address/{address}/movil/{movil}")
     @Produces({"application/json"})
     public String actuailizarCliente(@PathParam("id") String id,
@@ -75,14 +82,7 @@ public class Ws_agencia {
         comprobacion = comprobacion.concat(agenADEtravel.buscarPrimerCliente() + "]");
         return comprobacion;
     }
-
-    @GET
-    @Path("eliminarUnDocumento/id/{id}")
-    @Produces({"applicaction/json"})
-    public String eliminarUnDocumento(@PathParam("id") String id) {
-        return agenADEtravel.eliminarUnDocumento(id);
-
-    }
+    
 }
 
 
