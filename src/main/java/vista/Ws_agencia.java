@@ -1,24 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vista;
 
-import com.mongodb.client.MongoCursor;
-import static com.mongodb.client.model.Filters.regex;
 import control.Agencia;
-import javax.json.JsonValue;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.MediaType;
-import org.bson.Document;
 
 /**
  * REST Web Service
@@ -31,17 +19,9 @@ public class Ws_agencia {
     @Context
     private UriInfo context;
 
-    /**
-     * Creates a new instance of Ws_agencia
-     */
     public Ws_agencia() {
     }
 
-    /**
-     * Retrieves representation of an instance of vista.Ws_agencia
-     *
-     * @return an instance of java.lang.String
-     */
     Agencia agenADEtravel = new Agencia();
 
     @GET
@@ -71,14 +51,15 @@ public class Ws_agencia {
     public String eliminarUnDocumento(@PathParam("id") String id) {
         return agenADEtravel.eliminarUnDocumento(id);
     }
-
+    
     @GET
     @Path("actualizarClientes/id/{id}/nuevosDatos/{nuevosDatos}")
     @Produces({"application/json"})
     public String actuailizarCliente(@PathParam("id") String id, @PathParam("nuevosDatos") String nuevosDatos){
-        String comprobacion = "[" + agenADEtravel.buscarCliente(id) + ", ";
+        String comprobacion = "";
+        //String comprobacion = "{" + agenADEtravel.buscarCliente(id) + ", ";
         comprobacion += agenADEtravel.actualizarCliente(id, nuevosDatos);
-        comprobacion += (agenADEtravel.buscarCliente(id)) + "]";
+        //comprobacion += (agenADEtravel.buscarCliente(id)) + "}";
         return comprobacion;
     }
 

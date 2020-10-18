@@ -11,7 +11,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import static com.mongodb.client.model.Filters.*;
 import com.mongodb.client.model.Sorts;
-import static com.mongodb.client.model.Updates.*;
+import static com.mongodb.client.model.Updates.combine;
 import org.bson.conversions.Bson;
 
 
@@ -54,13 +54,15 @@ public class Agencia {
         try{
             FindIterable<Document> cursor = collection.find().sort(new BasicDBObject("numFac",-1)).limit(5);
             MongoCursor<Document> iterator = cursor.iterator();
-            respuesta = "[";
             while(iterator.hasNext()){
+                if (i == 0){
+                    respuesta = "{\"Consulta\":[{\"Documento\":";
+                }
                 respuesta += iterator.next().toJson();
                 if (i <= 3){
-                    respuesta += ", \n";
+                    respuesta += ", \n \"Documento\":";
                 }else if (i == 4){
-                    respuesta += "]";
+                    respuesta += "}]}";
                 }
                 i++;
             } 
@@ -83,14 +85,29 @@ public class Agencia {
     
     public String actualizarCliente(String id, String nuevosDatos){
         MongoCollection<Document> collection = database.getCollection("clientes");
+        BasicDBObject datos = new BasicDBObject();
         try{
-            /*collection.updateOne(eq("_id", new ObjectId(id)), combine(set("address", "\"address\""), set("movil", "\"movil\"")));*/
-            collection.updateOne(eq("_id", new ObjectId(id)), combine(set(nuevosDatos)));
-            
-            respuesta = "{\"Confirmation\":\" \nEl documento indicado se ha actualizado exitosamente\n \"}";
-        } catch (IllegalArgumentException e){
+            try{
+                try{
+                    /*collection.updateOne(eq("_id", new ObjectId(id)), combine(set("address", "\"address\""), set("movil", "\"movil\"")));*/
+                    datos = datos.parse(nuevosDatos);
+                    collection.updateOne(eq("_id", new ObjectId(id)), combine(set(datos)));
+                    /**BasicDBObject document = new BasicDBObject();            
+                    document.put("$set", collection.find(eq("_id", new ObjectId(id))).first().toJson());
+                    respuesta += "{" + document.toJson() + ", ";
+                    document.replace("$set", nuevosDatos);*/
+                    respuesta += "{\"Confirmation\":\" El documento indicado se ha actualizado exitosamente \"}, " + nuevosDatos + "}";
+                } catch (RuntimeException e){ //UnsupportedOperationException //ServletException
+                    respuesta = "{\"Confirmation\":\" El id del documento indicado no existe, o los datos y variables "
+                            + "ingresados son incorrectos, intente ingresarlos nuevamente\"}" + e.toString() + datos;
+                }
+            } catch (UnsupportedOperationException e){ //UnsupportedOperationException //ServletException
             respuesta = "{\"Confirmation\":\" El id del documento indicado no existe, o los datos y variables "
-                    + "ingresados son incorrectos, intente ingresarlos nuevamente\"}";
+                    + "ingresados son incorrectos, intente ingresarlos nuevamente\"}" + e.toString() + datos;
+        }
+        } catch (IllegalArgumentException e){ //UnsupportedOperationException //ServletException
+            respuesta = "{\"Confirmation\":\" El id del documento indicado no existe, o los datos y variables "
+                    + "ingresados son incorrectos, intente ingresarlos nuevamente\"}" + e.toString() + datos;
         }
         return respuesta;
     }
@@ -106,6 +123,10 @@ public class Agencia {
     }
 
     private Bson[] set(String nuevosDatos) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private Bson[] set(BasicDBObject datos) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
