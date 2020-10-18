@@ -21,7 +21,11 @@ public class Ws_agencia {
 
     public Ws_agencia() {
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f090e641256ea981a083a98cddb1db18f80ac0b7
     Agencia agenADEtravel = new Agencia();
     
     @GET
@@ -51,14 +55,20 @@ public class Ws_agencia {
     public String eliminarUnDocumento(@PathParam("id") String id) {
         return agenADEtravel.eliminarUnDocumento(id);
     }
+<<<<<<< HEAD
 
     /*@GET
+=======
+    
+    @GET
+>>>>>>> f090e641256ea981a083a98cddb1db18f80ac0b7
     @Path("actualizarClientes/id/{id}/nuevosDatos/{nuevosDatos}")
     @Produces({"application/json"})
     public String actuailizarCliente(@PathParam("id") String id, @PathParam("nuevosDatos") String nuevosDatos){
-        String comprobacion = "[" + agenADEtravel.buscarCliente(id) + ", ";
+        String comprobacion = "";
+        //String comprobacion = "{" + agenADEtravel.buscarCliente(id) + ", ";
         comprobacion += agenADEtravel.actualizarCliente(id, nuevosDatos);
-        comprobacion += (agenADEtravel.buscarCliente(id)) + "]";
+        //comprobacion += (agenADEtravel.buscarCliente(id)) + "}";
         return comprobacion;
     }*/
 
